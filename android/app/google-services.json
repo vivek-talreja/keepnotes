@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229796383851",
+    "project_id": "keepnotes-flutter-proj",
+    "storage_bucket": "keepnotes-flutter-proj.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229796383851:android:175390c187792c3259f52e",
+        "android_client_info": {
+          "package_name": "com.evergreen.keepnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvxG184vWpYSrZ6-QzNaxl5Zdx-hB4lpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
