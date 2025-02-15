@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Personal Notes App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -44,38 +45,55 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Register'),
+      appBar: AppBar(
+        title: Text('Register'),
+      ),
+      body: FutureBuilder(
+        future: Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
         ),
-        body: Column(
-          children: [
-            TextField(
-              controller: _email,
-              decoration: const InputDecoration(
-                hintText: 'Enter email',
-              ),
-            ),
-            TextField(
-              controller: _password,
-              decoration: const InputDecoration(
-                hintText: 'Enter password',
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                await Firebase.initializeApp(
-                  options: DefaultFirebaseOptions.currentPlatform,
-                );
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: _email.text,
-                  password: _password.text,
-                );
-                print("Credentials: $userCredential");
-              },
-              child: Text('Register'),
-            ),
-          ],
-        ));
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return Column(
+                children: [
+                  TextField(
+                    controller: _email,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter email',
+                    ),
+                    enableSuggestions: true,
+                    autocorrect: false,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  TextField(
+                    controller: _password,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter password',
+                    ),
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    obscureText: true,
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      final email = _email.text;
+                      final password = _password.text;
+                      final userCredential = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                        email: email,
+                        password: password,
+                      );
+                    },
+                    child: Text('Register'),
+                  ),
+                ],
+              );
+            default:
+              return const Text("Loading....");
+          }
+        },
+      ),
+    );
   }
 }
